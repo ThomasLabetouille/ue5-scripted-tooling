@@ -1,0 +1,38 @@
+# Ce dépôt ne contient que du texte : sources, scripts, docs.
+# Tout ce qui suit est soit régénéré, soit trop lourd pour être versionné ici.
+
+# Sorties de build
+Binaries/
+Intermediate/
+Build/
+DerivedDataCache/
+Saved/
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.obj
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Résultats d'exécution du harnais (variables d'une machine à l'autre)
+EvalHarness/results/
+EvalHarness/agentic/results/
+
+# Contenu Unreal : jamais dans cette copie filtrée
+*.uasset
+*.umap
+
+# Éditeurs et OS
+.vs/
+.idea/
+.vscode/
+*.sln
+*.suo
+.DS_Store
+Thumbs.db
