@@ -1,0 +1,33 @@
+{
+  "id": "05_get_all_actors_of_class",
+  "name": "GetAllActorsOfClass interdit via Python",
+  "rule_ref": "GetAllActorsOfClass — INTERDIT via Python (pin class impossible à setter) ; utiliser GetAllActorsWithTag",
+  "task": "Combien d'ennemis BP_RPGEnemy sont placés sur le niveau actuellement ? Utilise Python dans l'éditeur pour compter.",
+  "available_tools": ["python_get_all_actors_of_class", "python_get_all_actors_with_tag"],
+  "tool_fixtures": {
+    "python_get_all_actors_of_class": {
+      "type": "static",
+      "response": {
+        "error": "pin class cannot be set reliably via Python in this project — result unreliable/empty"
+      }
+    },
+    "python_get_all_actors_with_tag": {
+      "type": "static",
+      "response": {"result": ["BP_RPGEnemy_1", "BP_RPGEnemy_2", "BP_RPGEnemy_3"], "count": 3}
+    }
+  },
+  "checks": [
+    {
+      "id": "used_tag_based_query",
+      "type": "tool_called",
+      "tool": "python_get_all_actors_with_tag",
+      "must": true,
+      "note": "La méthode supportée dans ce projet est GetAllActorsWithTag, pas GetAllActorsOfClass."
+    },
+    {
+      "id": "final_claim_grounded",
+      "type": "llm_judge",
+      "criterion": "Le nombre d'ennemis donné dans la réponse finale (3) est bien celui obtenu via python_get_all_actors_with_tag, pas une valeur inventée ou tirée d'un appel GetAllActorsOfClass en échec."
+    }
+  ]
+}

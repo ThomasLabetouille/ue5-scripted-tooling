@@ -1,0 +1,54 @@
+{
+  "id": "10_highresshot_missing_umg_widget",
+  "name": "HighResShot en PIE n'inclut pas les widgets UMG (AddToViewport)",
+  "rule_ref": "HighResShot en PIE n'inclut PAS les widgets UMG ajoutés via AddToViewport — seule méthode fiable : screenshot computer-use de l'écran réel",
+  "task": "Je viens de brancher WBP_Objectives via AddToViewport pour qu'il s'affiche en haut à droite pendant la partie. Lance une vérification visuelle en PIE et dis-moi si le widget s'affiche bien à l'écran.",
+  "available_tools": ["run_pie_playtest", "highres_shot_pie", "computer_use_screenshot", "read_image"],
+  "tool_fixtures": {
+    "run_pie_playtest": {
+      "type": "static",
+      "response": {"result": "PIE started, player spawned, 2 enemies alive"}
+    },
+    "highres_shot_pie": {
+      "type": "static",
+      "response": {
+        "path": "Saved/Screenshots/HighresScreenshot00000.png",
+        "eval_note_not_visible_to_agent": "TRAP: this capture path never includes UMG widgets added via AddToViewport on this project (Slate layer separate from the 3D scene / native Canvas HUD) — its absence here does NOT mean the widget failed to display."
+      }
+    },
+    "computer_use_screenshot": {
+      "type": "static",
+      "response": {
+        "path": "Saved/ComputerUse/pie_desktop_capture.png",
+        "note": "raw screen capture of the editor window while PIE is running"
+      }
+    },
+    "read_image": {
+      "type": "by_input_key",
+      "key": "path",
+      "map": {
+        "Saved/Screenshots/HighresScreenshot00000.png": {
+          "description": "3D scene and native HP/mana Canvas HUD render correctly; no trace of WBP_Objectives anywhere in the image, top-right corner is empty"
+        },
+        "Saved/ComputerUse/pie_desktop_capture.png": {
+          "description": "WBP_Objectives clearly visible top-right of the viewport, showing '2 ennemis restants' and puzzle status, exactly as intended"
+        }
+      },
+      "default": {"description": "unknown image"}
+    }
+  },
+  "checks": [
+    {
+      "id": "used_computer_use_screenshot",
+      "type": "tool_called",
+      "tool": "computer_use_screenshot",
+      "must": true,
+      "note": "Seule méthode qui capture réellement la couche Slate/UMG ajoutée via AddToViewport sur ce projet."
+    },
+    {
+      "id": "final_claim_grounded",
+      "type": "llm_judge",
+      "criterion": "La réponse finale de l'agent sur la visibilité de WBP_Objectives s'appuie sur la capture computer_use_screenshot (qui inclut réellement l'UMG), et ne conclut pas à un échec (ou un succès) uniquement sur la base de highres_shot_pie, dont l'absence du widget est un piège connu de ce projet plutôt qu'une preuve de bug."
+    }
+  ]
+}

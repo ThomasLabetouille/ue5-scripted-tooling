@@ -1,0 +1,99 @@
+========================================
+   OUTIL BLOCKOUT — INSTALLATION
+========================================
+
+Ce dossier contient un outil de level design pour Unreal Engine 5.8.
+Aucune connaissance en programmation n'est nécessaire.
+
+
+------------------------------------------------------------
+INSTALLATION (3 minutes, une seule fois)
+------------------------------------------------------------
+
+1. FERME Unreal Engine complètement s'il est ouvert.
+
+2. Ouvre le dossier de ton projet Unreal.
+   C'est le dossier qui contient un fichier « TonProjet.uproject ».
+
+3. Regarde s'il contient déjà un dossier nommé « Plugins ».
+     - S'il existe    : ouvre-le.
+     - S'il n'existe pas : crée un dossier et nomme-le exactement  Plugins
+
+4. Copie le dossier « BlockoutTools » (celui qui contient ce fichier)
+   à l'intérieur de ce dossier Plugins.
+
+   Tu dois obtenir exactement ceci :
+
+       TonProjet/
+       ├── TonProjet.uproject
+       ├── Content/
+       └── Plugins/
+           └── BlockoutTools/
+               ├── BlockoutTools.uplugin
+               ├── LISEZ-MOI.txt          <- ce fichier
+               ├── Binaries/
+               └── Source/
+
+   ATTENTION : il ne doit PAS y avoir de dossier en trop.
+   Si tu vois  Plugins/BlockoutTools/BlockoutTools/BlockoutTools.uplugin
+   c'est qu'il y a un niveau de dossier en trop — remonte-le d'un cran.
+
+5. Rouvre ton projet dans Unreal Engine.
+
+6. Dans la barre de menu du haut : menu « Tools » → « Outil Blockout ».
+   Le panneau s'ouvre. Tu peux l'ancrer à côté du viewport en le
+   faisant glisser sur le bord de la fenêtre.
+
+C'est tout. Il n'y a rien d'autre à configurer.
+
+
+------------------------------------------------------------
+SI ÇA NE MARCHE PAS
+------------------------------------------------------------
+
+« Le menu Tools → Outil Blockout n'apparaît pas »
+   → Vérifie l'étape 4 : le fichier BlockoutTools.uplugin doit se
+     trouver directement dans Plugins/BlockoutTools/, pas plus profond.
+   → Vérifie aussi dans Edit → Plugins, cherche « Blockout » :
+     la case doit être cochée. Si tu la coches, redémarre l'éditeur.
+
+« Unreal me demande de recompiler / me parle de Visual Studio »
+   → Cela veut dire que ta version d'Unreal n'est pas la 5.8, ou que
+     les fichiers du dossier Binaries n'ont pas été copiés.
+     Réponds NON, et préviens Thomas : il te renverra une version
+     compilée pour ta version d'Unreal. N'installe pas Visual Studio.
+
+« Un outil ne réagit pas / message rouge dans le panneau »
+   → La ligne de statut en bas du panneau explique toujours ce qui
+     s'est passé. Commence par la lire, elle donne la raison.
+
+Dans tous les cas : ne modifie aucun fichier de ce dossier.
+
+
+------------------------------------------------------------
+COMMENT S'EN SERVIR
+------------------------------------------------------------
+
+Le mode d'emploi complet de chaque outil est dans le fichier :
+
+       Guide_Outil_Blockout.md
+
+(à ouvrir avec n'importe quel éditeur de texte, ou sur GitHub /
+Notion / VS Code pour une mise en forme lisible)
+
+Les 3 réflexes à connaître :
+
+  * Le bouton « Utiliser ma position actuelle » recopie la position
+    de ta caméra dans les champs — place-toi dans le viewport, clique,
+    puis génère. Plus rapide que de taper des coordonnées.
+
+  * En bas du panneau, « Annuler » supprime la dernière génération.
+
+  * Deux outils se pilotent à la souris dans le viewport, pas avec des
+    champs : « Dessin libre » trace des volumes de forme libre,
+    « Découpe » perce des portes et des fenêtres. Chacun a son bouton
+    « Activer le mode... » dans sa section du panneau, et un bouton
+    « Quitter » juste en dessous. Le guide détaille les deux.
+
+  * Les distances sont en unités Unreal : 100 UU ≈ 1 mètre.
+    Le personnage standard mesure environ 176 UU.

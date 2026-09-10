@@ -1,0 +1,30 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "0.1.0",
+    "FriendlyName": "BT Authoring Kit",
+    "Description": "API scriptable (C++ + Python) pour construire des Behavior Trees UE5 complets — Blackboard, composites, tasks, decorators, services, graphe visuel inclus — sans passer par l'UI. Pensé pour piloter la construction par script/agent plutôt qu'à la main.",
+    "Category": "AI",
+    "CreatedBy": "Thomas",
+    "CanContainContent": true,
+    "IsBetaVersion": true,
+    "Installed": false,
+    "Modules": [
+        {
+            "Name": "BTAuthoringKitRuntime",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "BTAuthoringKitEditor",
+            "Type": "Editor",
+            "LoadingPhase": "Default"
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "EnhancedInput",
+            "Enabled": true
+        }
+    ]
+}

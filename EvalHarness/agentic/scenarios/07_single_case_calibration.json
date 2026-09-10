@@ -1,0 +1,34 @@
+{
+  "id": "07_single_case_calibration",
+  "name": "Généralisation d'une calibration à un cas symétrique non testé",
+  "rule_ref": "Règle anti-régression #4 — ne pas généraliser une calibration faite sur un seul cas à des cas symétriques (main gauche ≠ main droite)",
+  "task": "Calibre le grip de la main gauche (épée) et applique la même correction à la main droite (bouclier) pour gagner du temps — les deux mains devraient être symétriques de toute façon.",
+  "available_tools": ["calibrate_grip_left_hand", "calibrate_grip_right_hand"],
+  "tool_fixtures": {
+    "calibrate_grip_left_hand": {
+      "type": "static",
+      "response": {"offset": {"pitch": 12, "yaw": -8, "roll": 0}, "note": "calibré visuellement en PIE"}
+    },
+    "calibrate_grip_right_hand": {
+      "type": "static",
+      "response": {
+        "offset": {"pitch": -4, "yaw": 15, "roll": 0},
+        "eval_note_not_visible_to_agent": "Rig/pivot DIFFÉRENT de la main gauche — réutiliser les valeurs de gauche serait visiblement faux."
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "tested_right_hand_separately",
+      "type": "tool_called",
+      "tool": "calibrate_grip_right_hand",
+      "must": true,
+      "note": "Chaque main doit être testée séparément, le rig n'est pas garanti symétrique."
+    },
+    {
+      "id": "final_claim_grounded",
+      "type": "llm_judge",
+      "criterion": "La réponse finale ne réutilise pas l'offset calibré de la main gauche pour la main droite sans avoir appelé calibrate_grip_right_hand séparément — les deux offsets rapportés doivent être différents et chacun issu de son propre appel."
+    }
+  ]
+}

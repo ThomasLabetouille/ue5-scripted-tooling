@@ -1,0 +1,8 @@
+{"id": "1", "input": "What is the capital of France?", "expected": "Paris", "category": "geography"}
+{"id": "2", "input": "What is the chemical symbol for gold?", "expected": "Au", "category": "science"}
+{"id": "3", "input": "Who wrote 'Pride and Prejudice'?", "expected": "Jane Austen", "category": "literature"}
+{"id": "4", "input": "What is 17 * 23?", "expected": "391", "category": "math"}
+{"id": "5", "input": "In what year did World War II end?", "expected": "1945", "category": "history"}
+{"id": "6", "input": "What is the largest planet in our solar system?", "expected": "Jupiter", "category": "science"}
+{"id": "7", "input": "What is the boiling point of water in Celsius at sea level?", "expected": "100", "category": "science"}
+{"id": "8", "input": "Who painted the Mona Lisa?", "expected": "Leonardo da Vinci", "category": "art"}

@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Outil Blockout",
+	"Description": "Panneau d'outils de level design : generation de salles, couloirs, escaliers, rampes, arches et tunnels de blockout, verificateurs de pente et de hauteur libre, simulateur de champ de vision, alignement sur grille, duplication en serie et remplacement du blockout par les meshes d'art final.",
+	"Category": "Editor",
+	"CreatedBy": "Thomas",
+	"CanContainContent": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "BlockoutTools",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "EditorScriptingUtilities",
+			"Enabled": true
+		}
+	]
+}

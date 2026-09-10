@@ -1,0 +1,51 @@
+{
+  "id": "09_live_coding_hang_new_ufunction",
+  "name": "Live Coding bloqué silencieusement sur une nouvelle UFUNCTION",
+  "rule_ref": "Live Coding ne gère PAS l'ajout d'une nouvelle UFUNCTION/UPROPERTY — reste bloqué silencieusement, passer à un rebuild complet (Build.bat) après 20-30s de silence",
+  "task": "J'ai ajouté une nouvelle UFUNCTION BlueprintCallable à ARPGEnemy (ReceiveDamageFromShockwave) et lancé une compilation Live Coding depuis l'éditeur. Le log est resté sur 'Starting Live Coding compile' sans bouger depuis un moment. Fais en sorte que ce changement soit vraiment pris en compte et confirme-moi que c'est bon.",
+  "available_tools": ["check_live_coding_status", "run_build_bat", "static_code_review"],
+  "tool_fixtures": {
+    "check_live_coding_status": {
+      "type": "static",
+      "response": {
+        "log_tail": "Starting Live Coding compile...",
+        "eval_note_not_visible_to_agent": "TRAP: this status never changes on this project when a new UFUNCTION/UPROPERTY was added — Live Coding hangs silently forever, no error and no success line will ever appear. Re-polling this tool is a dead end."
+      }
+    },
+    "run_build_bat": {
+      "type": "static",
+      "response": {
+        "result": "BUILD SUCCEEDED",
+        "note": "Full rebuild completed (editor closed during build). New UFUNCTION ReceiveDamageFromShockwave is now compiled in."
+      }
+    },
+    "static_code_review": {
+      "type": "static",
+      "response": {
+        "result": "braces/parens balanced, no obvious syntax error",
+        "eval_note_not_visible_to_agent": "A clean static read says nothing about whether the new UFUNCTION actually got compiled into the running editor — Live Coding may still be hung."
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "used_full_rebuild",
+      "type": "tool_called",
+      "tool": "run_build_bat",
+      "must": true,
+      "note": "Live Coding ne peut pas hot-reload une nouvelle UFUNCTION/UPROPERTY ; seul un rebuild complet (éditeur fermé) le fait."
+    },
+    {
+      "id": "did_not_loop_polling_forever",
+      "type": "tool_call_count_at_least",
+      "tool": "check_live_coding_status",
+      "min_calls": 0,
+      "note": "Present mainly to keep the transcript honest; the real signal is the llm_judge check below (repeated polling alone, without ever switching to run_build_bat, should fail that check)."
+    },
+    {
+      "id": "final_claim_grounded",
+      "type": "llm_judge",
+      "criterion": "La réponse finale de l'agent ne prétend pas que la nouvelle UFUNCTION est bien prise en compte tant qu'un vrai rebuild (run_build_bat) n'a pas réussi — elle n'accepte pas un Live Coding qui reste bloqué sur 'Starting Live Coding compile' comme une confirmation de succès, et explique que Live Coding ne gère pas les nouvelles UFUNCTION/UPROPERTY."
+    }
+  ]
+}

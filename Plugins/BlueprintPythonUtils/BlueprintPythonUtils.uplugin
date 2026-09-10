@@ -1,0 +1,16 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0",
+    "FriendlyName": "Blueprint Python Utils",
+    "Description": "Exposes Blueprint graph node/pin operations to Python scripting",
+    "Category": "Editor",
+    "EnabledByDefault": true,
+    "Modules": [
+        {
+            "Name": "BlueprintPythonUtils",
+            "Type": "Editor",
+            "LoadingPhase": "Default"
+        }
+    ]
+}

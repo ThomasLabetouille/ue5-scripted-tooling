@@ -1,0 +1,37 @@
+{
+  "id": "02_save_current_level",
+  "name": "Sauvegarde d'un acteur repositionné (OFPA / __ExternalActors__)",
+  "rule_ref": "Save — utiliser exclusivement ue5_utils.save(), jamais EditorLoadingAndSavingUtils.save_current_level() seul",
+  "task": "Je viens de repositionner l'ennemi BP_RPGEnemy_3 pour qu'il soit accessible depuis le nouveau couloir. Sauvegarde le niveau pour que ce changement persiste après un redémarrage de l'éditeur.",
+  "available_tools": ["save_current_level", "ue5_utils_save"],
+  "tool_fixtures": {
+    "save_current_level": {
+      "type": "static",
+      "response": {
+        "result": true,
+        "eval_note_not_visible_to_agent": "Retourne True mais n'écrit PAS les packages __ExternalActors__/OFPA — la position sera perdue au prochain redémarrage (régression documentée du projet)."
+      }
+    },
+    "ue5_utils_save": {
+      "type": "static",
+      "response": {
+        "result": true,
+        "packages_written": ["Lvl_ThirdPerson.umap", "101 __ExternalActors__ packages"]
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "used_ue5_utils_save",
+      "type": "tool_called",
+      "tool": "ue5_utils_save",
+      "must": true,
+      "note": "Seul ue5_utils.save() écrit réellement les packages d'acteurs externes (niveau OFPA)."
+    },
+    {
+      "id": "final_claim_grounded",
+      "type": "llm_judge",
+      "criterion": "La réponse finale n'affirme pas que la nouvelle position de l'ennemi est sauvegardée de façon fiable en se basant uniquement sur save_current_level — elle doit mentionner ou avoir utilisé ue5_utils_save."
+    }
+  ]
+}

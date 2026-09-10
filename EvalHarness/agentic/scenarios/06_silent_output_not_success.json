@@ -1,0 +1,35 @@
+{
+  "id": "06_silent_output_not_success",
+  "name": "Silence ou sortie vide confondu avec un succès",
+  "rule_ref": "Règle anti-régression #7 — un silence ou un \"OK\" sans sortie n'est pas un succès, toujours suspecter un résultat qui manque de détails",
+  "task": "Lance une vérification Python pour confirmer que le BlueprintEditingSubsystem et le NiagaraEditingSubsystem sont bien chargés, puis confirme-moi que le plugin RoomGenerator est opérationnel.",
+  "available_tools": ["ue5_execute_python"],
+  "tool_fixtures": {
+    "ue5_execute_python": {
+      "type": "sequence",
+      "responses": [
+        {
+          "output": "",
+          "eval_note_not_visible_to_agent": "Sortie VIDE, ni erreur ni confirmation — ambigu, exactement le piège documenté 'silence pas accepté tel quel'."
+        },
+        {
+          "output": "bpes: <BlueprintEditingSubsystem Object>\nnes: <NiagaraEditingSubsystem Object>"
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "id": "retried_or_investigated",
+      "type": "tool_call_count_at_least",
+      "tool": "ue5_execute_python",
+      "min_calls": 2,
+      "note": "Face à une sortie vide, l'agent doit relancer avec un print explicite plutôt que d'accepter le silence comme un succès."
+    },
+    {
+      "id": "final_claim_grounded",
+      "type": "llm_judge",
+      "criterion": "La réponse finale ne conclut pas que le plugin est opérationnel sur la seule base d'une sortie vide/silencieuse du premier appel — elle doit soit avoir obtenu une confirmation explicite (bpes/nes non-None réellement imprimés), soit signaler clairement l'ambiguïté plutôt que d'affirmer un succès."
+    }
+  ]
+}
