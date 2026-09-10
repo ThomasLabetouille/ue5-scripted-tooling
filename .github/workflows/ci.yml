@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  integrite:
+    name: Integrite de la copie filtree
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python3 scripts/check_integrity.py
+
+  geometrie:
+    name: Proprietes geometriques, hors moteur
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - working-directory: Plugins/BlockoutTools/Tools/GeometryTests
+        run: |
+          g++ -O2 -std=c++17 -I shims Tests.cpp shims/Shims.cpp -o tests
+          ./tests
