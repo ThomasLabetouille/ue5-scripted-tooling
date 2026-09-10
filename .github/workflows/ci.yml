@@ -22,5 +22,8 @@ jobs:
       - uses: actions/checkout@v4
       - working-directory: Plugins/BlockoutTools/Tools/GeometryTests
         run: |
-          g++ -O2 -std=c++17 -I shims Tests.cpp shims/Shims.cpp -o tests
-          ./tests
+          g++ -O2 -std=c++20 -I shims -I ../../Source/BlockoutTools/Public \
+              Tests.cpp shims/Shims.cpp \
+              ../../Source/BlockoutTools/Private/BlockoutPanelGeometry.cpp \
+              -o GeometryTests
+          ./GeometryTests 20

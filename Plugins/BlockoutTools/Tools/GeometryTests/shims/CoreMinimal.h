@@ -31,6 +31,8 @@ using uint8  = std::uint8_t;
 
 #define BLOCKOUTTOOLS_API
 #define PI (3.1415926535897932f)   // macro, exactement comme UnrealMathUtility.h
+#define SMALL_NUMBER       (1.e-8f)
+#define KINDA_SMALL_NUMBER (1.e-4f)
 
 template <typename T> void Swap(T& A, T& B) { T Tmp = std::move(A); A = std::move(B); B = std::move(Tmp); }
 template <typename T> T&& MoveTemp(T& V) { return std::move(V); }
@@ -70,6 +72,31 @@ struct FVector2D
     }
     bool operator==(const FVector2D& O) const { return X == O.X && Y == O.Y; }
     bool operator!=(const FVector2D& O) const { return !(*this == O); }
+
+    FVector2D operator+(const FVector2D& O) const { return FVector2D(X + O.X, Y + O.Y); }
+    FVector2D operator-(const FVector2D& O) const { return FVector2D(X - O.X, Y - O.Y); }
+    FVector2D operator*(double S)           const { return FVector2D(X * S, Y * S); }
+    FVector2D operator-()                   const { return FVector2D(-X, -Y); }
+
+    static double DotProduct(const FVector2D& A, const FVector2D& B) { return A.X * B.X + A.Y * B.Y; }
+
+    // Compare la norme au carre au seuil, comme FVector2D::GetSafeNormal d'Unreal :
+    // pas de racine avant le test, et retour du vecteur nul en dessous du seuil.
+    FVector2D GetSafeNormal(double Tolerance = SMALL_NUMBER) const
+    {
+        const double SquareSum = X * X + Y * Y;
+        if (SquareSum > Tolerance)
+        {
+            const double Scale = 1.0 / std::sqrt(SquareSum);
+            return FVector2D(X * Scale, Y * Scale);
+        }
+        return FVector2D(0.0, 0.0);
+    }
+
+    bool IsNearlyZero(double Tolerance = KINDA_SMALL_NUMBER) const
+    {
+        return FMath::Abs(X) <= Tolerance && FMath::Abs(Y) <= Tolerance;
+    }
 };
 
 struct FVector2f

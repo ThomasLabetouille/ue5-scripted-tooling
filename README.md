@@ -84,7 +84,13 @@ La partie géométrie et la partie éval tournent sans Unreal.
 ```bash
 # Géométrie du blockout, hors moteur — ~1 s, 40 000 contours
 cd Plugins/BlockoutTools/Tools/GeometryTests
-./run.bat            # ou : g++ -O2 -I shims Tests.cpp shims/Shims.cpp -o tests && ./tests
+./run.bat            # Windows, MSVC
+
+# ailleurs — trois unités de traduction, deux chemins d'include
+g++ -O2 -std=c++20 -I shims -I ../../Source/BlockoutTools/Public \
+    Tests.cpp shims/Shims.cpp \
+    ../../Source/BlockoutTools/Private/BlockoutPanelGeometry.cpp \
+    -o GeometryTests && ./GeometryTests 20
 
 # Harnais d'évaluation
 cd EvalHarness
@@ -152,7 +158,12 @@ CLAUDE.md                    les règles anti-régression, et la source des scé
 ## Écarts connus
 
 - `Plugins/BlockoutTools/Tools/GeometryTests/run.bat` (MSVC) n'a pas encore tourné sous Windows ; le
-  harnais est développé et lancé sous g++. Si `cl.exe` bronche, regarder du côté des doublures.
+  harnais est développé et lancé sous g++, et c'est ce chemin-là que la CI exerce. Si `cl.exe`
+  bronche, regarder du côté des doublures.
+- Les doublures ne couvrent que ce que la géométrie utilise réellement. C'est voulu : quand le code
+  se met à appeler une méthode Unreal absente, le harnais cesse de compiler et le dit. C'est arrivé
+  avec `SnapToOrthogonalFrame`, qui a introduit `GetSafeNormal`, `IsNearlyZero`, `DotProduct` et
+  les opérateurs arithmétiques de `FVector2D` — ajoutés depuis.
 - Le graphe de `BT_NPC_Patrol` est désynchronisé de son arbre compilé : le graphe contient deux
   copies de l'arbre, dont une orpheline, et il lui manque le correctif d'animation présent dans
   l'arbre runtime. Le recompiler effacerait ce correctif sans message. `BT_NPC_Naturalist`,
